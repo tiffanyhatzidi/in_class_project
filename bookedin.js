@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
@@ -11,6 +12,8 @@ var handlebars = require('express-handlebars').create();
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+//user body parser
+app.use(bodyParser.urlencoded({ extended: true }))
 
 /* GET home page. */
 app.use('/', indexRouter);
