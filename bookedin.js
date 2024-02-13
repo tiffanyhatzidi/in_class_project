@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
+const genresRouter = require('./routes/genres');
 
 const app = express()
 const port = 3000
@@ -20,7 +21,9 @@ app.use('/', indexRouter);
 /* GET authors page */
 app.use('/authors', authorsRouter);
 /* GET books page */
-app.use('/books', booksRouter);  
+app.use('/books', booksRouter); 
+/* GET books page */
+app.use('/genres', genresRouter); 
 
 // custom 404 page
 app.use((req, res) => {
