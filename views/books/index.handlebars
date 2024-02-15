@@ -1,5 +1,9 @@
 <h1>Books</h1>
 <a href="/books/form">Create a new book</a>
 {{#each books}}
-<li>{{this.bookName}} {{this.publishYear}}</li>
+<li>
+   <a href="/books/show/{{@index}}">{{@index}} - {{this.bookName}} - {{this.publishYear}}</a>
+ <!-- show index -->
+  <a href="/books/edit?id={{@index}}">edit</a>
+</li>
 {{/each}}

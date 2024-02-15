@@ -1,7 +1,13 @@
-<form action="/genres/create" role="form" method="post">
+<form action="/genres/upsert" role="form" method="post">
+{{#if genre}}
+    <div>
+      <h2>{{genre.bookGenre}}</h2>
+      <input type="hidden" name="id" value="{{genreIndex}}">
+    </div>
+{{/if}}
     <div>
         <label for="book_genre">Genre</label>
-        <input type="text" id="book_genre" name="bookGenre">
+        <input type="text" id="book_genre" name="bookGenre"{{#if genre}}value="{{genre.bookGenre}}"{{/if}}>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
