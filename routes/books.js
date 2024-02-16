@@ -30,8 +30,9 @@ router.get('/show/:id', async (req, res, next) => {
     title: 'BookedIn || Books',
     book: Book.get(req.params.id)
   }
-  if (templateVars.book.authorId) {
-    templateVars['author'] = Author.get(templateVars.book.authorId);
+  if (templateVars.book.authorIds) {
+    templateVars['authors'] = templateVars.book.authorIds.map((authorId) => Author.get(authorId))
+    console.log(templateVars);
   }
   res.render('books/show', templateVars);
 });

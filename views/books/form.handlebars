@@ -15,13 +15,13 @@
     <input type="int" id="publish_year" name="publishYear"{{#if book}}value="{{book.publishYear}}"{{/if}}>
   </div>
    <div class="mb-3">
-    <label for="authorId">Author</label>
-    <select name="authorId" id="authorId">
+    <label for="authorIds">Author</label>
+     <select name="authorIds" multiple id="authorIds">
       <option disabled selected value>-- select Author --</option>
       {{#each authors}}
-        <option value="{{@index}}">
-           <option value="{{@index}}" {{#if (and @root.book (eq @root.book.authorId @index))}}selected{{/if}}>
-          {{this.firstName}} {{this.lastName}}
+        <option value="{{@index}}"
+          {{#if (and @root.book (in @root.book.authorIds @index))}}selected{{/if}}>
+            {{this.firstName}} {{this.lastName}}
         </option>
       {{/each}}
     </select>
