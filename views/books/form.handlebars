@@ -25,6 +25,19 @@
         </option>
       {{/each}}
     </select>
+   </div>
+   <div class="mb-3">
+    <label for="genreIds">Genre</label>
+     <select name="genreIds" multiple id="genreIds">
+      <option disabled selected value>-- select Genre --</option>
+      {{#each genres}}
+       <option value="{{@index}}"
+          {{#if (and @root.book (in @root.book.genreIds @index))}}selected{{/if}}>
+            {{this.bookGenre}}
+        </option>
+      {{/each}}
+    </select>
+    </div>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
