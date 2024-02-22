@@ -19,6 +19,7 @@ router.post('/register', async (req, res, next) => {
       });
     } else {
       User.add(req.body);
+      req.session.currentUser = User.login(req.body);
       req.session.flash = {
         type: 'info',
         intro: 'Success!',
