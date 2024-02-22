@@ -10,13 +10,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/form', async (req, res, next) => {
-  res.render('books/form', { title: 'BookedIn || Books', authors: Author.all });
+  res.render('books/form', { title: 'BookedIn || Books', authors: Author.all, genres: Genre.all });
 });
 
 
 router.post('/upsert', async (req, res, next) => {
   console.log('body: ' + JSON.stringify(req.body)) //debug
   Book.upsert(req.body);
+  let createdOrupdated = req.body.id ? 'updated' : 'created';
+  req.session.flash = {
+    type: 'info',
+    intro: 'Success!',
+    message: `the book has been ${createdOrupdated}!`,
+  };
   res.redirect(303, '/books')
 });
 
