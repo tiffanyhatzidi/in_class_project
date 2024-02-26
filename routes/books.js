@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Book = require('../models/book');
-const Author = require('../models/author');
+const Book = require('../models/Book');
+const Author = require('../models/Author');
 const Genre = require('../models/Genre');
 
 router.get('/', function(req, res, next) {
