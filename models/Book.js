@@ -4,7 +4,7 @@ const books = [
     {bookName:"Death's End" , publishYear: 2010, authorIds: ['2'], genreIds: ['3']},
     {bookName:"Ready Player One", publishYear: 2011, authorIds: ['3'], genreIds: ['1', '3']}
   ]
-
+//TODO: change bookName to title, dumbass
   exports.all = books
 
   exports.add = (book) => {

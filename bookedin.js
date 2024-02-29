@@ -1,12 +1,14 @@
 const express = require('express')
 const { credentials } = require('./config')
 const bodyParser = require('body-parser')
+const csrf = require('csurf')
 
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
 const genresRouter = require('./routes/genres');
 const usersRouter = require('./routes/users');
+const booksUsersRouter = require('./routes/books_users');
 
 const app = express()
 const port = 3000
@@ -59,10 +61,16 @@ app.use((req, res, next) => {
   next()
 })
 
-
-
 //user body parser
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// this must come after we link in body-parser,
+// cookie-parser, and express-session
+app.use(csrf({ cookie: true }))
+app.use((req, res, next) => {
+  res.locals._csrfToken = req.csrfToken()
+  next()
+})
 
 /* GET home page. */
 app.use('/', indexRouter);
@@ -74,6 +82,8 @@ app.use('/books', booksRouter);
 app.use('/genres', genresRouter); 
 /* GET users page */
 app.use('/users', usersRouter);
+/* GET books_users */
+app.use('/books_users', booksUsersRouter);
 
 // custom 404 page
 app.use((req, res) => {
