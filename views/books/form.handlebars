@@ -39,6 +39,15 @@
       {{/each}}
     </select>
     </div>
+    <div>
+      <label for="comments">Comments</label> <br>
+      <textarea id="comments" name="comments" cols="36" rows="5">
+        {{log @root}}
+        {{#each comments}}
+        {{#if (and (eq @root.currentUser.email this.userEmail)(eq this.bookId @root.bookIndex))}}{{text}}{{/if}}
+        {{/each}} 
+      </textarea>
+    </div>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

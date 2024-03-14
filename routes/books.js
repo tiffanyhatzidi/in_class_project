@@ -4,6 +4,7 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Genre = require('../models/Genre');
 const BookUser = require ('../models/book_user');
+const Comments = require('../models/comment');
 
 router.get('/', function(req, res, next) {
   const books = Book.all;
@@ -11,7 +12,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/form', async (req, res, next) => {
-  res.render('books/form', { title: 'BookedIn || Books', authors: Author.all, genres: Genre.all });
+  let bookIndex = req.query.id;
+  let curCom = comments.filter(comment => {
+    return comment.userEmail === currentUser.email && comment.bookId === bookIndex;
+  });
+  res.render('books/form', { title: 'BookedIn || Books', authors: Author.all, genres: Genre.all, comments: Comments.AllForBook(bookIndex)});
 });
 
 
@@ -30,7 +35,9 @@ router.post('/upsert', async (req, res, next) => {
 router.get('/edit', async (req, res, next) => {
   let bookIndex = req.query.id;
   let book = Book.get(bookIndex);
-  res.render('books/form', { title: 'BookedIn || Books', book: book, bookIndex: bookIndex, authors: Author.all, genres: Genre.all });
+  console.log("comments: " + JSON.stringify(Comments.AllForBook(0)))
+  console.log("BookIndex: " + bookIndex)
+  res.render('books/form', { title: 'BookedIn || Books', book: book, bookIndex: bookIndex, authors: Author.all, genres: Genre.all, comments: Comments.AllForBook(bookIndex)});
 });
 
 router.get('/show/:id', async (req, res, next) => {
@@ -39,6 +46,9 @@ router.get('/show/:id', async (req, res, next) => {
     book: Book.get(req.params.id),
     bookId: req.params.id,
     statuses: BookUser.statuses
+  }
+  if(templateVars.book) {
+    templateVars['comments'] = Comments.AllForBook(templateVars.bookId);
   }
   if (templateVars.book.authorIds) {
     templateVars['authors'] = templateVars.book.authorIds.map((authorId) => Author.get(authorId))

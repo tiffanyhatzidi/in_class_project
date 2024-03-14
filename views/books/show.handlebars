@@ -10,6 +10,15 @@
 <p>
   Originally published in {{book.publishYear}}
 </p>
+{{#if comments}}
+<p>
+  {{#each comments}}{{this.text}} <br> By {{this.userEmail}}<br> 
+  {{#if (eq @root.currentUser.email this.userEmail)}}<a href="/books/edit?id={{this.bookId}}">edit</a><br> 
+  {{/if}}
+  {{#unless @last}}<br> 
+  {{/unless}}{{/each}}
+</p>
+{{/if}}
 {{#if currentUser}}
 <div>
   <form action="/books_users/upsert" role="form" method="post">
