@@ -84,6 +84,8 @@ app.use('/genres', genresRouter);
 app.use('/users', usersRouter);
 /* GET books_users */
 app.use('/books_users', booksUsersRouter);
+/* GET comments */
+app.use('/comments', booksUsersRouter);
 
 // custom 404 page
 app.use((req, res) => {

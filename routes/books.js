@@ -57,6 +57,9 @@ router.get('/show/:id', async (req, res, next) => {
   if(templateVars.book.genreIds) {
     templateVars['genres'] = templateVars.book.genreIds.map((genreId) => Genre.get(genreId))
   }
+  if(templateVars.book.commentIds) {
+    templateVars['comments'] = templateVars.book.commentIds.map((commentIds) => Comments.get(commentIds))
+  }
   if (req.session.currentUser) {
     templateVars['bookUser'] = BookUser.get(req.params.id, req.session.currentUser.email);
   }
