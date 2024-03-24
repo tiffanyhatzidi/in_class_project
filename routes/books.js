@@ -4,7 +4,8 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Genre = require('../models/Genre');
 const BookUser = require ('../models/book_user');
-const Comments = require('../models/comment');
+const Comment = require('../models/comment');
+
 
 router.get('/', function(req, res, next) {
   const books = Book.all;
@@ -16,7 +17,7 @@ router.get('/form', async (req, res, next) => {
   let curCom = comments.filter(comment => {
     return comment.userEmail === currentUser.email && comment.bookId === bookIndex;
   });
-  res.render('books/form', { title: 'BookedIn || Books', authors: Author.all, genres: Genre.all, comments: Comments.AllForBook(bookIndex)});
+  res.render('books/form', { title: 'BookedIn || Books', bookIndex: bookIndex, authors: Author.all, genres: Genre.all, comments: Comment.get(req.query.commentIds)});
 });
 
 
@@ -35,9 +36,9 @@ router.post('/upsert', async (req, res, next) => {
 router.get('/edit', async (req, res, next) => {
   let bookIndex = req.query.id;
   let book = Book.get(bookIndex);
-  console.log("comments: " + JSON.stringify(Comments.AllForBook(0)))
+  console.log("comments: " + JSON.stringify(Comment.AllForBook(0)))
   console.log("BookIndex: " + bookIndex)
-  res.render('books/form', { title: 'BookedIn || Books', book: book, bookIndex: bookIndex, authors: Author.all, genres: Genre.all, comments: Comments.AllForBook(bookIndex)});
+  res.render('books/form', { title: 'BookedIn || Books', book: book, bookIndex: bookIndex, authors: Author.all, genres: Genre.all, comments: Comment.AllForBook(bookIndex)});
 });
 
 router.get('/show/:id', async (req, res, next) => {
@@ -45,10 +46,11 @@ router.get('/show/:id', async (req, res, next) => {
     title: 'BookedIn || Books',
     book: Book.get(req.params.id),
     bookId: req.params.id,
-    statuses: BookUser.statuses
+    statuses: BookUser.statuses,
+    commentIds: Comment.AllForBook(req.params.id)
   }
   if(templateVars.book) {
-    templateVars['comments'] = Comments.AllForBook(templateVars.bookId);
+    templateVars['comments'] = Comment.AllForBook(templateVars.bookId);
   }
   if (templateVars.book.authorIds) {
     templateVars['authors'] = templateVars.book.authorIds.map((authorId) => Author.get(authorId))
@@ -57,8 +59,8 @@ router.get('/show/:id', async (req, res, next) => {
   if(templateVars.book.genreIds) {
     templateVars['genres'] = templateVars.book.genreIds.map((genreId) => Genre.get(genreId))
   }
-  if(templateVars.book.commentIds) {
-    templateVars['comments'] = templateVars.book.commentIds.map((commentIds) => Comments.get(commentIds))
+  if(templateVars.commentIds) {
+    templateVars['commentids'] = templateVars.commentIds.map((commentIds) => Comment.get(commentIds))
   }
   if (req.session.currentUser) {
     templateVars['bookUser'] = BookUser.get(req.params.id, req.session.currentUser.email);

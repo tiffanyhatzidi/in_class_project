@@ -15,8 +15,8 @@
   {{#each comments}}{{this.text}} <br> By {{this.userEmail}}<br> 
   {{#if (eq @root.currentUser.email this.userEmail)}}<a href="/books/edit?id={{this.bookId}}">edit</a><br> 
   {{/if}}
-  {{#unless @last}}<br> 
-  {{/unless}}{{/each}}
+  <br> 
+  {{/each}}
 </p>
 {{/if}}
 {{#if currentUser}}

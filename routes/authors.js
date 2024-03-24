@@ -7,6 +7,13 @@ router.get('/', function(req, res, next) {
   res.render('authors/index', { title: 'BookedIn || Authors', authors: authors });
 });
 
+/* DATABASE HOLD ON FOR NOW
+router.get('/', async (req, res, next) => {
+ let authors = await Author.all();
+ res.render('authors/index', { title: 'BookedIn || Authors', authors: authors });
+});
+*/
+
 router.get('/form', async (req, res, next) => {
   res.render('authors/form', { title: 'BookedIn || Authors' });
 });

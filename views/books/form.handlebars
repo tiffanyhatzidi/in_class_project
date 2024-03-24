@@ -39,15 +39,25 @@
       {{/each}}
     </select>
     </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{{#if currentUser}}
     <div>
+      <form action="/comments/upsert" role="form" method="post">
+      <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+      <input type="hidden" name="bookId" value="{{bookIndex}}">
+      <input type="hidden" name="userEmail" value="{{currentUser.email}}">
+      {{#if comments}}<input type="hidden" name="commentId" value="{{@index}}">{{/if}}
       <label for="comments">Comments</label> <br>
       <textarea id="comments" name="comments" cols="36" rows="5">
         {{log @root}}
         {{#each comments}}
         {{#if (and (eq @root.currentUser.email this.userEmail)(eq this.bookId @root.bookIndex))}}{{text}}{{/if}}
         {{/each}} 
-      </textarea>
+      </textarea> <br>
+      <button type="submit" class="btn btn-primary">Save Comment</button>
+      </form>
     </div>
+    {{/if}}
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  

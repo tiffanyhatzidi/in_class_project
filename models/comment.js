@@ -7,14 +7,14 @@ const comments = [
     return Math.max(...comments.map(c => c.id))+1;
     }
     exports.add = (comment) => {
-    comment.id = getNextId();
+    comment.id = getNextId().toString();
     comments.push(comment);
     }
     exports.update = (comment) => {
     comments[comment.id] = comment;
     }
     exports.upsert = (comment) => {
-    if (comment.id) {
+    if(comment.id) {
     exports.update(comment);
     } else {
     exports.add(comment);

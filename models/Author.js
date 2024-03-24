@@ -1,3 +1,12 @@
+/* DATABASE HOLD ON FOR NOW
+const db = require('../database')
+
+exports.all = async () => {
+ const { rows } = await db.getPool().query("select * from authors order by id");
+ return db.camelize(rows);
+}
+*/
+
 const authors = [
     {firstName: "James", lastName: "S. A. Corey"},
     {firstName: "Craig", lastName: "Alanson"},
