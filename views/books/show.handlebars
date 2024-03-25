@@ -13,7 +13,9 @@
 {{#if comments}}
 <p>
   {{#each comments}}{{this.text}} <br> By {{this.userEmail}}<br> 
-  {{#if (eq @root.currentUser.email this.userEmail)}}<a href="/books/edit?id={{this.bookId}}">edit</a><br> 
+  {{log this}}
+  {{#if (eq @root.currentUser.email this.userEmail)}}<a href="/comments/edit?id={{this.id}}&bookId={{this.bookId}}">edit</a><br> 
+  {{log this.bookId}}
   {{/if}}
   <br> 
   {{/each}}
@@ -36,18 +38,7 @@
     </select>
     <button type="submit">Submit</button>
   </form>
-</div>
-<div>
-  <form action="/comments/upsert" role="form" method="post">
-    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
-    <input type="hidden" name="bookId" value="{{bookId}}">
-    <input type="hidden" name="userEmail" value="{{currentUser.email}}">
-    <div>
-      <label for="comments">Comments</label> <br>
-      <textarea id="comments" name="comments" cols="36" rows="5"> 
-      </textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Save Comment</button>
-  </form>
+  <br>
+  <a href="/comments/edit?bookId={{bookId}}">Add Comment</a>
 </div>
 {{/if}}

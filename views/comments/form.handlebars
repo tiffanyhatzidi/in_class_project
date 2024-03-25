@@ -1,0 +1,13 @@
+<form action="/comments/upsert" role="form" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+    <input type="hidden" name="bookId" value="{{bookIndex}}">
+    {{#if currentUser}}
+    <div>
+        <input type="hidden" name="userEmail" value="{{currentUser.email}}">
+        <input type="text" id="text" name="text" value="{{comment.text}}">
+        {{log commentIndex}}
+        <input type="hidden" name="id" value="{{commentIndex}}">
+    </div>
+    {{/if}}
+    <button type="submit">Save Comment</button>
+</form>

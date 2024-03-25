@@ -46,8 +46,8 @@ router.get('/show/:id', async (req, res, next) => {
     title: 'BookedIn || Books',
     book: Book.get(req.params.id),
     bookId: req.params.id,
-    statuses: BookUser.statuses,
-    commentIds: Comment.AllForBook(req.params.id)
+    statuses: BookUser.statuses
+    //commentIds: Comment.AllForBook(req.params.id)
   }
   if(templateVars.book) {
     templateVars['comments'] = Comment.AllForBook(templateVars.bookId);
@@ -59,9 +59,9 @@ router.get('/show/:id', async (req, res, next) => {
   if(templateVars.book.genreIds) {
     templateVars['genres'] = templateVars.book.genreIds.map((genreId) => Genre.get(genreId))
   }
-  if(templateVars.commentIds) {
-    templateVars['commentids'] = templateVars.commentIds.map((commentIds) => Comment.get(commentIds))
-  }
+  // if(templateVars.commentIds) {
+  //   templateVars['commentids'] = templateVars.commentIds.map((commentIds) => Comment.get(commentIds))
+  // }
   if (req.session.currentUser) {
     templateVars['bookUser'] = BookUser.get(req.params.id, req.session.currentUser.email);
   }
