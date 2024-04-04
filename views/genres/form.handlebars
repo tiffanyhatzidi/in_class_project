@@ -2,13 +2,13 @@
   <input type="hidden" name="_csrf" value="{{_csrfToken}}">
 {{#if genre}}
     <div>
-      <h2>{{genre.bookGenre}}</h2>
-      <input type="hidden" name="id" value="{{genreIndex}}">
+      <h2>{{this.name}}</h2>
+      <input type="hidden" name="id" value="{{genre.id}}">
     </div>
 {{/if}}
     <div>
-        <label for="book_genre">Genre</label>
-        <input type="text" id="book_genre" name="bookGenre"{{#if genre}}value="{{genre.bookGenre}}"{{/if}}>
+        <label for="id">Genre</label>
+        <input type="text" id="id" name="name"{{#if genre}}value="{{genre.name}}"{{/if}}>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
