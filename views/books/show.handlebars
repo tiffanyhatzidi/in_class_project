@@ -1,14 +1,15 @@
-<h1>{{book.bookName}}</h1>
-{{#if authors}}
-<p>Written by {{#each authors}}{{this.firstName}} {{this.lastName}}{{#unless @last}}, {{/unless}}{{/each}}
+<h1>{{book.title}}</h1>
+{{#if book.authors}}
+<p>Written by {{#each book.authors}}{{this.firstName}} {{this.lastName}}{{#unless @last}}, {{/unless}}{{/each}}
 </p>
 {{/if}}
-{{#if genres}}
-<p>Genre: {{#each genres}}{{this.bookGenre}}{{#unless @last}}, {{/unless}}{{/each}}
+{{#if genre}}
+<p>Genre: {{genre.name}}
 </p>
 {{/if}}
 <p>
-  Originally published in {{book.publishYear}}
+  Originally published in {{book.publishingYear}}
+  {{log book}}
 </p>
 {{#if comments}}
 <p>
@@ -22,23 +23,27 @@
 </p>
 {{/if}}
 {{#if currentUser}}
+{{log book}}
 <div>
   <form action="/books_users/upsert" role="form" method="post">
     <input type="hidden" name="_csrf" value="{{_csrfToken}}">
-    <input type="hidden" name="bookId" value="{{bookId}}">
-    <input type="hidden" name="userEmail" value="{{currentUser.email}}">
+    <input type="hidden" name="bookId" value="{{book.id}}">
+    <input type="hidden" name="userId" value="{{currentUser.id}}">
+    {{#if bookUser}}
+    <input type="hidden" name="id" value="{{bookUser.id}}">
+    {{/if}}
     <label for="status">Status</label>
-    <select name="status" id="status">
-      {{#unless (and bookUser bookUser.status)}}
+    <select name="readStatus" id="readStatus">
+      {{#unless (and bookUser bookUser.readStatus)}}
         <option disabled value>-- select status --</option>
       {{/unless}}
       {{#each statuses}}
-        <option value="{{this}}" {{#if (and @root.bookUser (eq @root.bookUser.status this))}}selected{{/if}}>{{this}}</option>
+        <option value="{{this}}" {{#if (and @root.bookUser (eq @root.bookUser.readStatus this))}}selected{{/if}}>{{this}}</option>
       {{/each}}
     </select>
     <button type="submit">Submit</button>
   </form>
   <br>
-  <a href="/comments/edit?bookId={{bookId}}">Add Comment</a>
+  <a href="/comments/edit?bookId={{book.Id}}">Add Comment</a>
 </div>
 {{/if}}

@@ -14,7 +14,7 @@ router.get('/register', async (req, res, next) => {
 router.post('/register', async (req, res, next) => {
     console.log('body: ' + JSON.stringify(req.body));
     if (helpers.isLoggedIn(req, res)) {return}
-    const user = User.getByEmail(req.body.email)
+    const user = await User.getByEmail(req.body.email)
     if (user) {
       res.render('users/register', {
         title: 'BookedIn || Login',
@@ -24,8 +24,8 @@ router.post('/register', async (req, res, next) => {
           message: `A user with this email already exists`}
       });
     } else {
-      User.add(req.body);
-      req.session.currentUser = User.login(req.body);
+      await User.add(req.body);
+      req.session.currentUser = await User.login(req.body); //should there be an await here?
       req.session.flash = {
         type: 'info',
         intro: 'Success!',
@@ -42,7 +42,7 @@ router.get('/login', async (req, res, next) => {
   router.post('/login', async (req, res, next) => {
     if (helpers.isLoggedIn(req, res)) {return}
     console.log('body: ' + JSON.stringify(req.body));
-    const user = User.login(req.body)
+    const user = await User.login(req.body)
     if (user) {
       req.session.currentUser = user
       req.session.flash = {
@@ -76,7 +76,7 @@ router.get('/login', async (req, res, next) => {
     if (helpers.isNotLoggedIn(req, res)) {
       return
     }
-    const booksUser = BookUser.AllForUser(req.session.currentUser.email);
+    const booksUser = await BookUser.AllForUser(req.session.currentUser);
     booksUser.forEach((bookUser) => {
       bookUser.book = Book.get(bookUser.bookId)
     })

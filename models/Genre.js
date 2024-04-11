@@ -7,6 +7,7 @@ exports.all = async () => {
 
 exports.get = async (id) => {
   const { rows } = await db.getPool().query("SELECT * FROM genres WHERE id = $1", [id])
+  console.log(rows)
   return db.camelize(rows)[0]
 }
 

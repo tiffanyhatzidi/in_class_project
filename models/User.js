@@ -1,8 +1,9 @@
+const db = require("../database");
 var crypto = require('crypto');
 
-const users = [
-  {email:"fhatzidi@pratt.edu",name:"Tiffany",salt:"46ebd4fdde9319d3c966ce15010f425c", encryptedPassword:"98a45fea842143bd0255cd846fcbf4d492eb3cb793b0c8c78352f1c3e489ae37"}
-];
+// const users = [
+//   {email:"fhatzidi@pratt.edu",name:"Tiffany",salt:"46ebd4fdde9319d3c966ce15010f425c", encryptedPassword:"98a45fea842143bd0255cd846fcbf4d492eb3cb793b0c8c78352f1c3e489ae37"}
+// ];
 
 
 const createSalt = () => {
@@ -13,40 +14,38 @@ const encryptPassword = (password, salt) => {
   return crypto.pbkdf2Sync(password, salt, 310000, 32, 'sha256').toString('hex')
 }
 
-exports.add = (user) => {
+exports.add = async (user) => {
   let salt = createSalt();
-  let new_user = {
-    email: user.email,
-    name: user.name,
-    salt: salt,
-    encryptedPassword: encryptPassword(user.password, salt)
-  }
-  //console.log('body: ' + JSON.stringify(new_user));
-  users.push(new_user);
+  let encryptedPassword = encryptPassword(user.password, salt)
+  return db.getPool()
+    .query("INSERT INTO users(email, name, salt, password) VALUES($1, $2, $3, $4) RETURNING *",
+      [user.email, user.name, salt, encryptedPassword])
 }
 
-exports.getByEmail = (email) => {
-  return users.find((user) => user.email === email);
+exports.getByEmail = async (email) => {
+  const { rows } = await db.getPool().query("select * from users where email = $1", [email])
+  return db.camelize(rows)[0]
+
 }
 
-exports.get = (idx) => {
-  return users[idx];
-}
+// exports.get = (idx) => {
+//   return users[idx];
+// }
 
-exports.login = (login) => {
-  let user = exports.getByEmail(login.email);
+exports.login = async (login) => {
+  let user = await exports.getByEmail(login.email);
   if (!user) {
     return null;
   }
   let encryptedPassword = encryptPassword(login.password, user.salt);
-  if (user.encryptedPassword === encryptedPassword) {
+  if (user.password === encryptedPassword) {
     return user;
   }
   return null;
 }
 
 
-exports.all = users
+// exports.all = users
   
   
   

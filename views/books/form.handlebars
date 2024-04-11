@@ -2,39 +2,39 @@
   <input type="hidden" name="_csrf" value="{{_csrfToken}}">
   {{#if book}}
     <div>
-      <h2>{{book.bookName}} {{book.publishYear}}</h2>
-      <input type="hidden" name="id" value="{{bookIndex}}">
+      <h2>{{book.title}} {{book.publishing_year}}</h2>
+      <input type="hidden" name="id" value="{{book.id}}">
     </div>
   {{/if}}
   <div>
   <div>
     <label for="book_name">Title</label>
-    <input type="text" id="book_name" name="bookName"{{#if book}}value="{{book.bookName}}"{{/if}}>
+    <input type="text" id="book_name" name="title"{{#if book}}value="{{book.title}}"{{/if}}>
   </div>
   <div>
     <label for="publish_year">Year</label>
-    <input type="int" id="publish_year" name="publishYear"{{#if book}}value="{{book.publishYear}}"{{/if}}>
+    <input type="int" id="publish_year" name="publishingYear"{{#if book}}value="{{book.publishingYear}}"{{/if}}>
   </div>
    <div class="mb-3">
     <label for="authorIds">Author</label>
      <select name="authorIds" multiple id="authorIds">
-      <option disabled selected value>-- select Author --</option>
+      <option disabled value>-- select Author --</option>
       {{#each authors}}
-        <option value="{{@index}}"
-          {{#if (and @root.book (in @root.book.authorIds @index))}}selected{{/if}}>
+        <option value="{{this.id}}"
+          {{#if (and @root.book (in @root.book.authorIds this.id))}}selected{{/if}}>
             {{this.firstName}} {{this.lastName}}
         </option>
       {{/each}}
     </select>
    </div>
    <div class="mb-3">
-    <label for="genreIds">Genre</label>
-     <select name="genreIds" multiple id="genreIds">
-      <option disabled selected value>-- select Genre --</option>
+    <label for="genreId">Genre</label>
+     <select name="genreId" id="genreId">
+      <option disabled value>-- select Genre --</option>
       {{#each genres}}
-       <option value="{{@index}}"
-          {{#if (and @root.book (in @root.book.genreIds @index))}}selected{{/if}}>
-            {{this.bookGenre}}
+       <option value="{{this.id}}"
+          {{#if (and @root.book (eq @root.book.genreId this.id))}}selected{{/if}}>
+            {{this.name}}
         </option>
       {{/each}}
     </select>
