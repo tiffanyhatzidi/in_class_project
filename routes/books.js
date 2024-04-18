@@ -43,28 +43,29 @@ router.get('/edit', async (req, res, next) => {
 });
 
 router.get('/show/:id', async (req, res, next) => {
+  const book = await Book.get(req.params.id)
   let templateVars = {
     title: 'BookedIn || Books',
-    book: await Book.get(req.params.id),
+    book: book,
     bookId: req.params.id,
-    statuses: BookUser.statuses
-    //commentIds: Comment.AllForBook(req.params.id)
+    statuses: BookUser.statuses,
+    comments: await Comment.allForBook(book)
   }
-  if(templateVars.book) {
-    templateVars['comments'] = Comment.AllForBook(templateVars.bookId);
-  }
+  // if(templateVars.book) {
+  //   templateVars['comments'] = Comment.AllForBook(templateVars.bookId);
+  // }
 
-  templateVars.book.authors = await Author.allForBook(templateVars.book);
+  book.authors = await Author.allForBook(book);
 
-  if(templateVars.book.genreId) {
-    templateVars['genre'] = await Genre.get(templateVars.book.genreId);
+  if(book.genreId) {
+    templateVars['genre'] = await Genre.get(book.genreId);
   }
 
   // if(templateVars.commentIds) {
   //   templateVars['commentids'] = templateVars.commentIds.map((commentIds) => Comment.get(commentIds))
   // }
   if (req.session.currentUser) {
-    templateVars['bookUser'] = await BookUser.get(templateVars.book, req.session.currentUser);
+    templateVars['bookUser'] = await BookUser.get(book, req.session.currentUser);
   }
   console.log("=========")
   console.log(templateVars);

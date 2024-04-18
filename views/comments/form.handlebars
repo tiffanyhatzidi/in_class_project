@@ -3,10 +3,7 @@
     <input type="hidden" name="bookId" value="{{bookIndex}}">
     {{#if currentUser}}
     <div>
-        <input type="hidden" name="userEmail" value="{{currentUser.email}}">
-        <input type="text" id="text" name="text" value="{{comment.text}}">
-        {{log commentIndex}}
-        <input type="hidden" name="id" value="{{commentIndex}}">
+        <textarea rows="5" id="comment" name="comment">{{comment.comment}}</textarea>
     </div>
     {{/if}}
     <button type="submit">Save Comment</button>
